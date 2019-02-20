@@ -8,12 +8,14 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
+import com.tictalk.core.BezierUtil
 
 class BubbleView(context: Context, attrs: AttributeSet) : View(context, attrs) {
     private val colors = arrayOfNulls<Int>(2)
     private val positons = arrayOfNulls<Int>(2)
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
     val bubbles = arrayListOf<BubbleBean>()
+    var switch = false
 
     private val animatorSet = AnimatorSet()
     private val inAnimator by lazy {
@@ -21,8 +23,16 @@ class BubbleView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         animator.duration = 800
         animator.interpolator = AccelerateDecelerateInterpolator()
         animator.addUpdateListener {
-            //            it.animatedValue
+            val t = it.animatedValue as Float
             //控制进场
+            for (bubble in bubbles) {
+                val realTimePointF =
+                    BezierUtil.CalculateBezierPointForQuadratic(
+                        t, bubble.initPoint, bubble.floatPoint, bubble.endPoint
+                    )
+                bubble.movingPoint = realTimePointF
+            }
+            invalidate()
         }
         return@lazy animator
     }
@@ -36,5 +46,15 @@ class BubbleView(context: Context, attrs: AttributeSet) : View(context, attrs) {
             paint.alpha = bubble.alpha
             canvas?.drawCircle(bubble.movingPoint.x, bubble.movingPoint.y, bubble.radius, paint)
         }
+    }
+
+    fun startAnimation() {
+        if (!switch) {
+            animatorSet.play(inAnimator)
+            animatorSet.start()
+        } else {
+            animatorSet.reverse()
+        }
+        switch = !switch
     }
 }
