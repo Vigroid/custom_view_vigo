@@ -16,9 +16,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-//        bubble.bubbles.addAll(demoData)
-//        bubble.setOnClickListener {
-//            bubble.startAnimation()
-//        }
+        confirm.setOnClickListener {
+            confirm.startAnim()
+        }
     }
 }
