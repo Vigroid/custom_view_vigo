@@ -5,6 +5,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MainActivity">
-    <com.tictalk.widget.ConfirmAnimationView
-            android:id="@+id/confirm" android:layout_width="match_parent" android:layout_height="match_parent"/>
+    <com.tictalk.widget.InputRectView
+            android:layout_centerInParent="true"
+            android:id="@+id/confirm" android:layout_width="match_parent" android:layout_height="100dp"/>
 </RelativeLayout>
