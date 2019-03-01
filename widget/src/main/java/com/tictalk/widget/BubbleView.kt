@@ -55,7 +55,7 @@ class BubbleView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         animator.duration = 3000
         animator.interpolator = AccelerateDecelerateInterpolator()
         animator.addUpdateListener {
-            val t = it.animatedFraction as Float
+            val t = it.animatedFraction
 
             for ((i, bubble) in bubbles.withIndex()) {
                 pathMeasures[i].getPosTan(pathMeasures[i].length * t, pos, tan)
