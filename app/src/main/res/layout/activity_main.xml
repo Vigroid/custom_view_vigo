@@ -7,5 +7,5 @@
         tools:context=".MainActivity">
     <com.tictalk.widget.InputRectView
             android:layout_centerInParent="true"
-            android:id="@+id/confirm" android:layout_width="match_parent" android:layout_height="100dp"/>
+            android:id="@+id/confirm" android:layout_width="match_parent" android:layout_height="wrap_content"/>
 </RelativeLayout>

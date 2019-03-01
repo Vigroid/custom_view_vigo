@@ -13,10 +13,13 @@ class InputRectView(context: Context, attributeSet: AttributeSet) : EditText(con
     private var textLength = 0
     private val maxTextLength = 6
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val framePaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     init {
         paint.style = Paint.Style.FILL
         paint.color = Color.BLACK
+        framePaint.style = Paint.Style.STROKE
+        framePaint.strokeWidth = 3f
         filters = arrayOf(InputFilter.LengthFilter(maxTextLength))
         setBackgroundColor(Color.TRANSPARENT)
         isCursorVisible = false
@@ -28,6 +31,7 @@ class InputRectView(context: Context, attributeSet: AttributeSet) : EditText(con
     }
 
     override fun onDraw(canvas: Canvas?) {
+        canvas?.drawRoundRect(0f, 0f, width.toFloat(), height.toFloat(), 10f,10f, framePaint)
         canvas?.let { drawPswCircles(it) }
     }
 
@@ -37,6 +41,7 @@ class InputRectView(context: Context, attributeSet: AttributeSet) : EditText(con
 
         for (i in 1..textLength) {
             canvas.drawCircle(drawingWidth*i, drawingHeight, 20f, paint)
+            canvas.drawLine(drawingWidth*i -20f, height -10f, drawingWidth*i+ 20f, height -10f, framePaint)
         }
     }
 }
