@@ -57,7 +57,7 @@ class ConfirmAnimationView(context: Context, attributeSet: AttributeSet) : View(
     private fun initOkPaint() {
         okPaint.style = Paint.Style.STROKE
         okPaint.color = Color.WHITE
-        okPaint.strokeWidth = 5f
+        okPaint.strokeWidth = 10f
     }
 
     private fun initSquareToCircleAnim() {
@@ -80,27 +80,13 @@ class ConfirmAnimationView(context: Context, attributeSet: AttributeSet) : View(
         moveUpAnim = ObjectAnimator.ofFloat(this, "transY", 0f, 300f)
         moveUpAnim.interpolator = AccelerateDecelerateInterpolator()
         moveUpAnim.duration = 500
-        moveUpAnim.addListener(object : Animator.AnimatorListener {
-            override fun onAnimationRepeat(animation: Animator?) {
-            }
-
-            override fun onAnimationEnd(animation: Animator?) {
-                shouldDrawOk = true
-                invalidate()
-            }
-
-            override fun onAnimationCancel(animation: Animator?) {
-            }
-
-            override fun onAnimationStart(animation: Animator?) {
-            }
-        })
     }
 
     private fun initCheckDrawingAnim() {
         drawOKAnim = ValueAnimator.ofFloat(1f, 0f)
         drawOKAnim.duration = 1000
         drawOKAnim.addUpdateListener {
+            shouldDrawOk = true
             val t = it.animatedValue as Float
             okPathEffect =
                 DashPathEffect(floatArrayOf(okPathMeasure.length, okPathMeasure.length),
