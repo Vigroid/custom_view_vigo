@@ -11,11 +11,15 @@ class TagLayout(context: Context, attributeSet: AttributeSet) : ViewGroup(contex
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         var widthUsed = 0
         var heightUsed = 0
+
         var lineMaxHeight = 0
+        var lineWidthUsed = 0
+        var specMode = MeasureSpec.getMode(widthMeasureSpec)
+        var specSize = MeasureSpec.getSize(widthMeasureSpec)
 
         for (i in 0 until childCount) {
             val child = getChildAt(i)
-            measureChildWithMargins(child, widthMeasureSpec, widthUsed, heightMeasureSpec, heightUsed)
+            measureChildWithMargins(child, widthMeasureSpec, 0, heightMeasureSpec, heightUsed)
 
             var childBound:Rect
 
@@ -26,12 +30,22 @@ class TagLayout(context: Context, attributeSet: AttributeSet) : ViewGroup(contex
                 childBound = childBounds[i]
             }
 
-            childBound.set(widthUsed, heightUsed, widthUsed + child.measuredWidth, heightUsed + child.measuredHeight)
-            widthUsed += child.measuredWidth
+            //超过一行了
+            if(specMode!= MeasureSpec.UNSPECIFIED && lineWidthUsed + child.measuredWidth > specSize){
+                lineWidthUsed = 0
+                heightUsed += lineMaxHeight
+                lineMaxHeight = 0
+                //换行
+                measureChildWithMargins(child, widthMeasureSpec, 0, heightMeasureSpec, heightUsed)
+            }
+
+            childBound.set(lineWidthUsed, heightUsed, lineWidthUsed + child.measuredWidth, heightUsed + child.measuredHeight)
+            lineWidthUsed += child.measuredWidth
+            widthUsed = Math.max(widthUsed, lineWidthUsed)
             lineMaxHeight = Math.max(lineMaxHeight, child.measuredHeight)
         }
 
-        setMeasuredDimension(widthUsed, lineMaxHeight)
+        setMeasuredDimension(widthUsed, heightUsed + lineMaxHeight)
     }
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
